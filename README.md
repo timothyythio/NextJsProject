@@ -2,6 +2,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+To create the project, node.js is needed
+You will then run 
+`npx create-next-app@latest` and select these options
+![image](https://github.com/user-attachments/assets/7c153e43-378b-4b15-8950-de3d35fd0b87)
+
+
 First, run the development server:
 
 ```bash
