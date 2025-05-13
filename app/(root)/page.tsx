@@ -1,8 +1,8 @@
 export const metadata = {
-  title: 'Home',
+  title: "Home",
 };
 const Homepage = () => {
-  return ( <>ProStore</> );
-}
- 
+  return <>ProStore</>;
+};
+
 export default Homepage;
