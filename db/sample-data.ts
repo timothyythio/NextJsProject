@@ -1,15 +1,17 @@
+import { hashSync } from "bcrypt-ts-edge";
+
 const sampleData = {
   users: [
     {
       name: "John",
       email: "admin@example.com",
-      password: "123456",
+      password: hashSync("123456", 10), //a salt (10) is a random value to make it more secure, even if 2 people have the same password
       role: "admin",
     },
     {
       name: "Jane",
       email: "user@example.com",
-      password: "123456",
+      password: hashSync("123456", 10),
       role: "user",
     },
   ],
