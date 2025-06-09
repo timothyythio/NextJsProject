@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import '../assets/styles/globals.css';
+import "../assets/styles/globals.css";
 import { APP_NAME, APP_DESC, SERVER_URL } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
 
-const inter = Inter({subsets: ['latin']});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
     default: APP_NAME,
-    template: `Prostore | %s`
+    template: `Prostore | %s`,
   },
   description: APP_DESC,
-  metadataBase: new URL(SERVER_URL)
+  metadataBase: new URL(SERVER_URL),
 };
 
 export default function RootLayout({
@@ -22,15 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} antialiased`}>
-          <ThemeProvider 
-            attribute='class' 
-            defaultTheme="light" 
-            enableSystem disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+      <body className={`${inter.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
