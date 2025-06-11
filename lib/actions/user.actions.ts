@@ -15,6 +15,7 @@ export async function signInWithCredentials(
       email: formData.get("email"),
       password: formData.get("password"),
     });
+    console.log("🚨 signInWithCredentials called", user);
 
     await signIn("credentials", user);
     return {
@@ -35,4 +36,5 @@ export async function signInWithCredentials(
 export async function signOutUser() {
   //calls the sign out from /auth
   await signOut();
+  console.log("Signed Out Succesfully!");
 }
