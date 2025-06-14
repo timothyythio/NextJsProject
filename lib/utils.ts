@@ -20,3 +20,31 @@ export function formatNumberWithDecimal(num: number): string {
   //padEnd just makes it 2 decimal places. the 0 next to it ensures that if there are numbers like 49.9, a 0 is added so it becomes 49.90
   return decimal ? `${int}.${decimal.padEnd(2, "0")}` : `${int}.00`;
 }
+
+// Reformat errors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function formatErrors(error: any) {
+  if (error.name === "ZodError") {
+    //Handle any Zod errors
+
+    const fieldErrors = Object.keys(error.errors).map(
+      (field) => error.errors[field].message
+    );
+
+    return fieldErrors.join(". ");
+  } else if (
+    error.name === "PrismaClientKnownRequestError" &&
+    error.code === "P2002"
+  ) {
+    //Handle prisma errors
+
+    const field = error.meta?.target ? error.meta.target[0] : "Field";
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+  } else {
+    //Handle other errors
+
+    return typeof error.message === "string"
+      ? error.message
+      : JSON.stringify(error.essage);
+  }
+}

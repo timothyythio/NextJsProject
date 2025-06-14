@@ -33,3 +33,41 @@ export const SignInFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+// Schema for signing up
+
+export const SignUpFormSchema = z
+  .object({
+    name: z.string().min(3, "Name must be at least 3 characters"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmpPassword"],
+  });
+
+//Cart Schemas
+
+export const cartItemSchema = z.object({
+  productId: z.string().min(1, "Product is required"),
+  productName: z.string().min(1, "Name is required"),
+  sku: z.string().min(1, "SKU is required"),
+  quantity: z.number().int().nonnegative("Quantity must be a positive number"),
+  image: z.string().min(1, "Image is required"),
+  price: currency,
+});
+
+export const cartSchema = z.object({
+  items: z.array(cartItemSchema),
+  itemsPrice: currency,
+  totalPrice: currency,
+  shippingPrice: currency,
+  taxPrice: currency,
+  sessionCartId: z.string().min(1, "Session Cart ID is required"),
+  //users that aren't logged in can add to cart
+  userId: z.string().optional(),
+});
