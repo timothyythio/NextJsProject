@@ -12,3 +12,11 @@ export async function getLatestProducts() {
   });
   return convertToPlainObject(data);
 }
+
+//Get product by SKU
+
+export async function getProductBySlug(slug: string) {
+  return await prisma.product.findFirst({
+    where: { slug: slug },
+  });
+}
