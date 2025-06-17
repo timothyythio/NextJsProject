@@ -1,6 +1,10 @@
 import { z } from "zod";
-import { insertProductSchema } from "@/lib/validators";
-import { cartSchema, cartItemSchema } from "@/lib/validators";
+import {
+  cartSchema,
+  cartItemSchema,
+  insertProductSchema,
+  shippingAddressSchema,
+} from "@/lib/validators";
 
 export type Product = z.infer<typeof insertProductSchema> & {
   //these are all things that should be updated automatically (i.e. not manually inserted)
@@ -12,5 +16,6 @@ export type Product = z.infer<typeof insertProductSchema> & {
 
 export type Cart = z.infer<typeof cartSchema>;
 export type CartItem = z.infer<typeof cartItemSchema>;
+export type ShippingAddress = z.infer<typeof shippingAddressSchema>;
 
 //we will not be using this manual method, but using Zod, we can do all this automatically
