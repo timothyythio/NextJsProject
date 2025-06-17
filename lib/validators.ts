@@ -69,5 +69,5 @@ export const cartSchema = z.object({
   taxPrice: currency,
   sessionCartId: z.string().min(1, "Session Cart ID is required"),
   //users that aren't logged in can add to cart
-  userId: z.string().optional(),
+  userId: z.string().optional().nullable(),
 });
