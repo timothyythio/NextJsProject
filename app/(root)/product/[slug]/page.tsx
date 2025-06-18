@@ -74,7 +74,7 @@ const ProductDetailsPage = async (props: {
                     item={{
                       productId: product.id,
                       productName: product.name,
-                      sku: product.slug,
+                      slug: product.slug,
                       price: product.price,
                       quantity: 1,
                       image: product.images![0],
