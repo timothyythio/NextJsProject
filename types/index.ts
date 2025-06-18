@@ -29,6 +29,6 @@ export type Order = z.infer<typeof insertOrderSchema> & {
   paidAt: Date | null;
   isDelivered: Boolean;
   deliveredAt: Date | null;
-  orderitems: OrderItem[];
+  orderItem: OrderItem[];
   user: { name: string; email: string };
 };

@@ -100,3 +100,17 @@ export async function createOrder() {
     return { success: false, message: formatErrors(error) };
   }
 }
+
+export async function getOrderById(orderId: string) {
+  const data = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      orderItem: true,
+      user: { select: { name: true, email: true } },
+    },
+  });
+
+  return convertToPlainObject(data);
+}
