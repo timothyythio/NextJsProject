@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
-// import PlaceOrderForm from "./place-order-form";
+import PlaceOrderForm from "./place-order-form";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -97,11 +97,11 @@ const PlaceOrderPage = async () => {
                         >
                           <Image
                             src={item.image}
-                            alt={item.productName}
+                            alt={item.name}
                             width={50}
                             height={50}
                           />
-                          <span className="px-2">{item.productName}</span>
+                          <span className="px-2">{item.name}</span>
                         </Link>
                       </TableCell>
                       <TableCell>
@@ -138,6 +138,7 @@ const PlaceOrderPage = async () => {
                 <div>{formatCurrency(cart.totalPrice)}</div>
               </div>
             </CardContent>
+            <PlaceOrderForm />
           </Card>
         </div>
       </div>

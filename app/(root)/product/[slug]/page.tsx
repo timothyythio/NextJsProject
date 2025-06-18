@@ -73,7 +73,7 @@ const ProductDetailsPage = async (props: {
                     cart={cart}
                     item={{
                       productId: product.id,
-                      productName: product.name,
+                      name: product.name,
                       slug: product.slug,
                       price: product.price,
                       quantity: 1,
