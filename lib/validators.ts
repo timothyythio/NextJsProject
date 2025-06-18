@@ -55,7 +55,7 @@ export const SignUpFormSchema = z
 
 export const cartItemSchema = z.object({
   productId: z.string().min(1, "Product is required"),
-  productName: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Name is required"),
   slug: z.string().min(1, "Slug is required"),
   quantity: z.number().int().nonnegative("Quantity must be a positive number"),
   image: z.string().min(1, "Image is required"),
@@ -92,26 +92,26 @@ export const paymentMethodSchema = z
     path: ["type"],
     message: "Invalid payment method",
   });
+// Schema for inserting order
 
-// Schema for inserting orders
 export const insertOrderSchema = z.object({
-  userId: z.string().min(1, "User Id is required"),
+  userId: z.string().min(1, "User is required"),
   itemsPrice: currency,
-  totalPrice: currency,
   shippingPrice: currency,
   taxPrice: currency,
+  totalPrice: currency,
   paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
     message: "Invalid payment method",
   }),
   shippingAddress: shippingAddressSchema,
 });
 
-// Schema for order Items
-export const orderItemSchema = z.object({
-  productId: z.string().min(1, "Product ID is required"),
-  slug: z.string().min(1, "Slug is required"),
-  name: z.string().min(1, "Name is required"),
-  image: z.string().min(1, "Name is required"),
+// Schema for inserting an order item
+export const insertOrderItemSchema = z.object({
+  productId: z.string(),
+  slug: z.string(),
+  image: z.string(),
+  name: z.string(),
   price: currency,
-  quantity: z.number(),
+  qty: z.number(),
 });

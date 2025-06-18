@@ -133,7 +133,6 @@ export async function getMyCart() {
   });
   if (!cart) return undefined;
 
-  console.log("This is the cart", cart);
   //Convert decimals and return
   return convertToPlainObject({
     ...cart,
