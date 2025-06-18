@@ -46,10 +46,10 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
               </TableHeader>
               <TableBody>
                 {cart.items.map((item) => (
-                  <TableRow key={item.sku}>
+                  <TableRow key={item.slug}>
                     <TableCell>
                       <Link
-                        href={`/product/${item.sku}`}
+                        href={`/product/${item.slug}`}
                         className="flex items-center"
                       >
                         <Image

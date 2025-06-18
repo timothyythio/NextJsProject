@@ -13,7 +13,7 @@ export async function getLatestProducts() {
   return convertToPlainObject(data);
 }
 
-//Get product by SKU
+//Get product by Slug
 
 export async function getProductBySlug(slug: string) {
   return await prisma.product.findFirst({
