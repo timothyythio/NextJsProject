@@ -48,7 +48,7 @@ export const SignUpFormSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords must match",
-    path: ["confirmpPassword"],
+    path: ["confirmPassword"],
   });
 
 //Cart Schemas
@@ -113,5 +113,5 @@ export const insertOrderItemSchema = z.object({
   image: z.string(),
   name: z.string(),
   price: currency,
-  qty: z.number(),
+  quantity: z.number(),
 });
