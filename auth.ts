@@ -78,12 +78,59 @@ export const config = {
     async jwt({ token, user, trigger, session }: any) {
       //Assign user fields to token
       if (user) {
+        token.id = user.id;
         token.role = user.role;
+
+        if (trigger === "signIn" || trigger === "signUp") {
+          const cookiesObject = await cookies();
+          const sessionCartId = cookiesObject.get("sessionCartId")?.value;
+
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: {
+                sessionCartId,
+              },
+            });
+
+            // Gets rid off any cart that exists right now
+            if (sessionCart) {
+              await prisma.cart.deleteMany({
+                where: { userId: user.id },
+              });
+
+              // Assign new cart
+              await prisma.cart.update({
+                where: { id: sessionCart.id },
+                data: { userId: user.id },
+              });
+            }
+          }
+        }
       }
       return token;
     },
 
     authorized({ request, auth }: any) {
+      // array of regex patterns of paths that we want to protect
+
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/admin/,
+        /\/order\/(.*)/,
+      ];
+
+      // Get pathname from the request URL object
+      const { pathname } = request.nextUrl;
+
+      // Check if unauthorized user accesses page
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) {
+        return false;
+      }
+
       //check for session cart Id (which is a UUID to identify user's cart)
       //if the cookie doesn't exist, create one
       if (!request.cookies.get("sessionCartId")) {
