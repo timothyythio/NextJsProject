@@ -18,7 +18,7 @@ export const paypal = {
         purchase_units: [
           {
             amount: {
-              currency_code: "CAD",
+              currency_code: "USD",
               value: price,
             },
           },
