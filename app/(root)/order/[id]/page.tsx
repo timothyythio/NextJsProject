@@ -16,6 +16,8 @@ const OrderDetailsPage = async (props: {
 }) => {
   const { id } = await props.params;
   const order = await getOrderById(id);
+
+  const session = await auth();
   if (!order) notFound();
 
   return (
@@ -25,6 +27,7 @@ const OrderDetailsPage = async (props: {
         shippingAddress: order.shippingAddress as ShippingAddress,
       }}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
+      isAdmin={session?.user?.role === "admin" || false}
     />
   );
 };

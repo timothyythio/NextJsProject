@@ -15,6 +15,11 @@ import { Order } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
+import {
+  updateOrderToPaidCOD,
+  deliverOrder,
+} from "@/lib/actions/admin.actions";
+import { useTransition } from "react";
 
 import {
   PayPalButtons,
@@ -29,9 +34,11 @@ import {
 const OrderDetailsTable = ({
   order,
   paypalClientId,
+  isAdmin,
 }: {
   order: Order;
   paypalClientId: string;
+  isAdmin: boolean;
 }) => {
   const {
     id,
@@ -59,6 +66,7 @@ const OrderDetailsTable = ({
     return status;
   };
 
+  // PAYPAL FUNCTIONS
   const handleCreatePayPalOrder = async () => {
     const res = await createPayPalOrder(order.id);
     if (!res.success) {
@@ -73,6 +81,48 @@ const OrderDetailsTable = ({
     const res = await approvePayPalOrder(order.id, data);
     console.log("Order approved");
     toast.message(res.message);
+  };
+
+  // PAYPAL FUNCTIONS END
+
+  // Button to mark order as paid
+  const MarkAsPaidButton = () => {
+    const [isPending, startTransition] = useTransition();
+
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await updateOrderToPaidCOD(order.id);
+            toast.message(res.message);
+          })
+        }
+      >
+        {isPending ? "processing..." : "Mark As Paid"}
+      </Button>
+    );
+  };
+
+  // Button to mark order as delivered
+  const MarkAsDeliveredButton = () => {
+    const [isPending, startTransition] = useTransition();
+
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await deliverOrder(order.id);
+            toast.message(res.message);
+          })
+        }
+      >
+        {isPending ? "processing..." : "Mark As Delivered"}
+      </Button>
+    );
   };
 
   return (
@@ -189,6 +239,10 @@ const OrderDetailsTable = ({
                 </div>
               )}
             </CardContent>
+
+            {/* Admin Buttons */}
+            {isAdmin && !isPaid && <MarkAsPaidButton />}
+            {isAdmin && isPaid && !isDelivered && <MarkAsDeliveredButton />}
           </Card>
         </div>
       </div>

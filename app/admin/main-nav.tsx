@@ -6,8 +6,8 @@ import React from "react";
 
 const links = [
   {
-    title: "Overview",
-    href: "/admin/overview",
+    title: "Dashboard",
+    href: "/admin/dashboard",
   },
   {
     title: "Products",
