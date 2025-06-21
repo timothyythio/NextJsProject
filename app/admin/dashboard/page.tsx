@@ -14,8 +14,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/auth";
 import Charts from "./charts";
-// import Charts from './charts';
-// import { requireAdmin } from '@/lib/auth-guard';
+import { requireAdmin } from "@/lib/auth-guard";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -23,6 +23,8 @@ export const metadata: Metadata = {
 
 const AdminDashboardPage = async () => {
   const session = await auth();
+
+  await requireAdmin();
   if (session?.user?.role !== "admin")
     throw new Error("User is not authorized");
 
@@ -119,9 +121,9 @@ const AdminDashboardPage = async () => {
                     </TableCell>
                     <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                     <TableCell>
-                      <Link href={`/order/${order.id}`}>
-                        <div className="span px-2">Details</div>
-                      </Link>
+                      <Button asChild variant="outline" size="sm">
+                        <Link href={`/order/${order.id}`}>Order Details</Link>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
