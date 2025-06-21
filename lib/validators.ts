@@ -116,12 +116,12 @@ export const insertOrderItemSchema = z.object({
   quantity: z.number(),
 });
 
-
 // Profile Schema
 
 export const updateProfileSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
+});
 
 // Payment Result Schema
 export const paymentResultSchema = z.object({
@@ -129,5 +129,4 @@ export const paymentResultSchema = z.object({
   status: z.string(),
   email_address: z.string(),
   pricePaid: z.string(),
-
 });
