@@ -21,10 +21,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
-// import { UploadButton } from '@/lib/uploadthing';
+import { UploadButton } from "@/lib/uploadthing";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
-import { Checkbox } from "../ui/checkbox";
+// import { Checkbox } from "../ui/checkbox";
 import { ArrowRight } from "lucide-react";
 
 const ProductForm = ({
@@ -37,10 +37,6 @@ const ProductForm = ({
   productId?: string;
 }) => {
   const router = useRouter();
-
-  type ProductFormSchema =
-    | z.infer<typeof insertProductSchema>
-    | z.infer<typeof updateProductSchema>;
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver: zodResolver(
@@ -71,6 +67,9 @@ const ProductForm = ({
       router.push("/admin/products");
     }
   };
+
+  const images = form.watch("images");
+
   return (
     <Form {...form}>
       <form
@@ -117,9 +116,16 @@ const ProductForm = ({
                 <FormControl>
                   <div className="relative">
                     <Input placeholder="Enter product slug" {...field} />
+
                     <Button
                       type="button"
                       className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-1 mt-2"
+                      onClick={() => {
+                        form.setValue(
+                          "slug",
+                          slugify(form.getValues("name"), { lower: true })
+                        );
+                      }}
                     >
                       Generate
                     </Button>
@@ -221,6 +227,44 @@ const ProductForm = ({
         </div>
         <div className="upload-field flex flex-col md:flex-row gap-5">
           {/* Images */}
+          <FormField
+            control={form.control}
+            name="images"
+            render={() => (
+              <FormItem className="w-full flex flex-col items-start">
+                <FormLabel>Images</FormLabel>
+                <Card className="w-1/2">
+                  <CardContent className="space-y-2 mt-2 min-h-48 ">
+                    <div className="flex-start space-x-2">
+                      {images.map((image: string) => (
+                        <Image
+                          className="w-20 h-20 object-cover object-center rounded-sm"
+                          key={image}
+                          src={image}
+                          height={100}
+                          width={100}
+                          alt="Product Image"
+                        />
+                      ))}
+                      <FormControl>
+                        <UploadButton
+                          className="border-2 pb-2 pr-2 pl-2"
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(res: { url: string }[]) => {
+                            form.setValue("images", [...images, res[0].url]);
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast.message(`Error ${error.message}`);
+                          }}
+                        />
+                      </FormControl>
+                    </div>
+                  </CardContent>
+                </Card>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div className="upload-field">{/* isFeatured? */}</div>
         <div className="">

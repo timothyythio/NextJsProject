@@ -65,15 +65,30 @@ export async function getOrderSummary() {
   };
 }
 
-// Get ALL user orders
+// Get ALL orders
 export async function getAllOrders({
   limit = PAGE_SIZE,
   page,
+  query,
 }: {
   limit?: number;
   page: number;
+  query: string;
 }) {
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== "all"
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            } as Prisma.StringFilter,
+          },
+        }
+      : {};
+
   const data = await prisma.order.findMany({
+    where: { ...queryFilter },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
@@ -160,11 +175,23 @@ export async function deliverOrder(orderId: string) {
 export async function getAllUsers({
   limit = PAGE_SIZE,
   page,
+  query,
 }: {
   limit?: number;
   page: number;
+  query: string;
 }) {
+  const queryFilter: Prisma.UserWhereInput =
+    query && query !== "all"
+      ? {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          } as Prisma.StringFilter,
+        }
+      : {};
   const data = await prisma.user.findMany({
+    where: { ...queryFilter },
     orderBy: [{ createdAt: "desc" }, { role: "asc" }],
     take: limit,
     skip: (page - 1) * limit,
