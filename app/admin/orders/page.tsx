@@ -20,28 +20,41 @@ export const metadata: Metadata = {
 };
 
 const AdminOrdersPage = async (props: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; query: string }>;
 }) => {
-  const { page = "1" } = await props.searchParams;
+  const { page = "1", query: searchText } = await props.searchParams;
 
   await requireAdmin();
 
   const orders = await getAllOrders({
     page: Number(page),
-    limit: 2,
+    query: searchText,
   });
 
   console.log(orders);
 
   return (
     <div className="space-y-2">
-      <h2 className="h2-bold">Orders</h2>
+      <div className="flex items-center gap-3">
+        <h1 className="h2-bold">Orders</h1>
+        {searchText && (
+          <div className="">
+            Filtered by <i>&quot;{searchText}&quot;</i>
+            <Link href="/admin/orders" className="pl-2">
+              <Button variant="outline" size="sm">
+                Remove Filter
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Buyer</TableHead>
               <TableHead>Total</TableHead>
               <TableHead>Paid At</TableHead>
               <TableHead>Delivered At</TableHead>
@@ -55,6 +68,7 @@ const AdminOrdersPage = async (props: {
                 <TableCell>
                   {formatDateTime(order.createdAt).dateTime}
                 </TableCell>
+                <TableCell>{order.user.name}</TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>
                   {order.isPaid && order.paidAt
@@ -70,7 +84,7 @@ const AdminOrdersPage = async (props: {
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/order/${order.id}`}>Details</Link>
                   </Button>
-                  <DeleteDialog id={order.id} action={deleteOrder} />
+                  <DeleteDialog id={order.id} action={deleteOrder} role={""} />
                 </TableCell>
               </TableRow>
             ))}

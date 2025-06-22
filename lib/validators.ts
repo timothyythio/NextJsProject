@@ -23,8 +23,8 @@ export const insertProductSchema = z.object({
   // This is how you initialize an array
   // In the z.array, there needs to be a datatype, in this case, it's string
   images: z.array(z.string()).min(1, "Product must have at least 1 image"),
-  isFeatured: z.boolean(),
-  banner: z.string().nullable(),
+  // isFeatured: z.boolean(),
+  // banner: z.string().nullable(),
   price: currency,
 });
 
