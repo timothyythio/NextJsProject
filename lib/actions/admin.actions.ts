@@ -4,7 +4,7 @@ import { convertToPlainObject, formatErrors } from "../utils";
 import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
-import { insertOrderSchema } from "../validators";
+import { insertOrderSchema, updateUserSchema } from "../validators";
 import { prisma } from "@/db/prisma";
 import { CartItem, PaymentResult } from "@/types";
 import { revalidatePath } from "next/cache";
@@ -13,6 +13,7 @@ import { paypal } from "../paypal";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
 import { updateOrderToPaid } from "./order.actions";
+import z from "zod";
 
 // Get sales data and order summary
 type SalesDataType = {
@@ -151,5 +152,93 @@ export async function deliverOrder(orderId: string) {
     };
   } catch (error) {
     return { success: false, message: formatErrors(error) };
+  }
+}
+
+// Get ALL users
+
+export async function getAllUsers({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const data = await prisma.user.findMany({
+    orderBy: [{ createdAt: "desc" }, { role: "asc" }],
+    take: limit,
+    skip: (page - 1) * limit,
+  });
+
+  const dataCount = await prisma.user.count();
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
+}
+
+// Deleting a user
+
+export async function deleteUser(id: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    // If user not found
+    if (!user) {
+      return {
+        success: false,
+        message: "User not found.",
+      };
+    }
+
+    // Prevent deleting admins
+    if (user.role === "admin") {
+      return {
+        success: false,
+        message: "Cannot delete an admin user.",
+      };
+    }
+
+    await prisma.user.delete({
+      where: { id, role: "user" },
+    });
+
+    revalidatePath("/admin/users");
+    return {
+      success: true,
+      message: "User Deleted Successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatErrors(error),
+    };
+  }
+}
+
+export async function updateUser(user: z.infer<typeof updateUserSchema>) {
+  try {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        name: user.name,
+        role: user.role,
+        email: user.email,
+      },
+    });
+
+    revalidatePath("/admin/users");
+    return {
+      success: true,
+      message: "User Updated Successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatErrors(error),
+    };
   }
 }

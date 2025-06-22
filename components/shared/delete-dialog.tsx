@@ -17,9 +17,11 @@ import {
 const DeleteDialog = ({
   id,
   action,
+  role,
 }: {
   id: string;
   action: (id: string) => Promise<{ success: boolean; message: string }>;
+  role: string;
 }) => {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -39,14 +41,19 @@ const DeleteDialog = ({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button size="sm" variant="destructive" className="ml-2">
+        <Button
+          size="sm"
+          variant="destructive"
+          className="ml-2"
+          disabled={role === "admin"}
+        >
           Delete
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure you want to delete this item?
+            Are you sure you want to delete this entry?
           </AlertDialogTitle>
           <AlertDialogDescription>
             You cannot revert this change
@@ -57,7 +64,7 @@ const DeleteDialog = ({
           <Button
             variant="destructive"
             size="sm"
-            disabled={isPending}
+            disabled={isPending || role === "admin"}
             onClick={handleDeleteClick}
           >
             {isPending ? "Deleting..." : "Delete"}
