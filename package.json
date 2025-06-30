@@ -9,7 +9,8 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "start-all": "concurrently \"npm run dev\" \"npx prisma studio\""
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",
@@ -56,6 +57,7 @@
     "@types/react-dom": "^19",
     "@types/ws": "^8.18.1",
     "bufferutil": "^4.0.9",
+    "concurrently": "^9.2.0",
     "dotenv": "^16.5.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
