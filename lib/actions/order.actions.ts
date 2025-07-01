@@ -6,11 +6,12 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
-import { CartItem, PaymentResult } from "@/types";
+import { CartItem, PaymentResult, ShippingAddress } from "@/types";
 import { revalidatePath } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { paypal } from "../paypal";
 import { PAGE_SIZE } from "../constants";
+import { sendPurchaseReceipt } from "@/email";
 
 // Create order and create the order items
 export async function createOrder() {
@@ -160,7 +161,7 @@ export async function createPayPalOrder(orderId: string) {
 // Approve paypal order and update order to paid
 export async function approvePayPalOrder(
   orderId: string,
-  data: { orderID: string }
+  data: { orderID: string },
 ) {
   try {
     // Get order from database
@@ -259,9 +260,17 @@ export async function updateOrderToPaid({
   });
 
   if (!updatedOrder) throw new Error("Order not found");
+  console.log("Sending Email Receipt...");
+  sendPurchaseReceipt({
+    order: {
+      ...updatedOrder,
+      shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+      paymentResult: updatedOrder.paymentResult as PaymentResult,
+    },
+  });
 }
 
-// Get user's orders
+// FUNCTION: Get user's orders
 export async function getMyOrders({
   limit = PAGE_SIZE,
   page,
