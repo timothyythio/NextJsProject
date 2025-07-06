@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAllProducts, deleteProduct } from "@/lib/actions/product.actions";
 import { formatCurrency, formatId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Product } from "@/types";
 import {
   Table,
   TableBody,
@@ -68,7 +69,7 @@ const AdminProductsPage = async (props: {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.data.map(async (product) => (
+          {products.data.map(async (product: Product) => (
             <TableRow key={product.id}>
               <TableCell>{formatId(product.id)}</TableCell>
               <TableCell>{product.name}</TableCell>

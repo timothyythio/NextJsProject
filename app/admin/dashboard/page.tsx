@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrderSummary } from "@/lib/actions/admin.actions";
+import { Order } from "@/types";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import { Barcode, CreditCard, Users, CircleDollarSign } from "lucide-react";
 import { Metadata } from "next";
@@ -111,7 +112,7 @@ const AdminDashboardPage = async () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {summary.latestSales.map((order) => (
+                {summary.latestSales.map((order: Order) => (
                   <TableRow key={order.id}>
                     <TableCell>
                       {order?.user?.name ? order.user.name : "Deleted User"}
