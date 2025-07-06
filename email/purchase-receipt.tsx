@@ -12,7 +12,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
-import { Order } from "@/types";
+import { Order, Product, OrderItem } from "@/types";
 import { formatCurrency } from "@/lib/utils";
 import sampleData from "@/db/sample-data";
 require("dotenv").config();
@@ -38,7 +38,7 @@ PurchaseReceiptEmailTemplate.PreviewProps = {
     taxPrice: "10",
     shippingPrice: "10",
     itemsPrice: "80",
-    orderItem: sampleData.products.map((x) => ({
+    orderItem: sampleData.products.map((x: Product) => ({
       name: x.name,
       orderId: "123",
       productId: "123",
@@ -109,7 +109,7 @@ export default function PurchaseReceiptEmailTemplate({
               </Row>
             </Section>
             <Section className="border border-solid border-gray-500 rounded-lg p-4 md:pd-6 my-4">
-              {order.orderItem.map((item) => (
+              {order.orderItem.map((item: OrderItem) => (
                 <Row key={item.productId} className="mt-8">
                   <Column className="w-20">
                     <Img
@@ -136,7 +136,7 @@ export default function PurchaseReceiptEmailTemplate({
                 { name: "Tax", price: order.taxPrice },
                 { name: "Shipping", price: order.shippingPrice },
                 { name: "Total", price: order.totalPrice },
-              ].map(({ name, price }) => (
+              ].map(({ name, price }: { name: string; price: string }) => (
                 <Row key={name} className="py-1">
                   <Column align="right">{name}: </Column>
                   <Column align="right" width={70} className="align-top">

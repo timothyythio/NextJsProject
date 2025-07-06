@@ -26,7 +26,7 @@ const MainNav = ({
       className={cn("flex items-center spcae-x-4 lg: space-x-6", className)}
       {...props}
     >
-      {links.map((item) => (
+      {links.map((item: typeof links[number]) => (
         <Link
           key={item.href}
           href={item.href}

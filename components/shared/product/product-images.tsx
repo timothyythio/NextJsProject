@@ -16,7 +16,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
         height={1000}
       />
       <div className="flex">
-        {images.map((image, index) => (
+        {images.map((image: string, index: number) => (
           <div
             key={image}
             onClick={() => setCurrent(index)}

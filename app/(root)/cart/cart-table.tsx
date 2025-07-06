@@ -1,5 +1,5 @@
 "use client";
-import { Cart } from "@/types";
+import { Cart, CartItem } from "@/types";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
@@ -45,7 +45,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cart.items.map((item) => (
+                {cart.items.map((item: CartItem) => (
                   <TableRow key={item.slug}>
                     <TableCell>
                       <Link

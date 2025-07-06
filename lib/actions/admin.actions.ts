@@ -40,10 +40,12 @@ export async function getOrderSummary() {
     Array<{ month: string; totalSales: Prisma.Decimal }>
   >`SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')`;
 
-  const salesData: SalesDataType = salesDataRaw.map((entry) => ({
-    month: entry.month,
-    totalSales: Number(entry.totalSales),
-  }));
+  const salesData: SalesDataType = salesDataRaw.map(
+    (entry: { month: string; totalSales: Prisma.Decimal }) => ({
+      month: entry.month,
+      totalSales: Number(entry.totalSales),
+    })
+  );
 
   // Get most recent orders
 

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
-import { Order } from "@/types";
+import { Order, OrderItem } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -176,7 +176,7 @@ const OrderDetailsTable = ({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {orderItem.map((item) => (
+                  {orderItem.map((item: OrderItem) => (
                     <TableRow key={item.productId}>
                       <TableCell>
                         <Link

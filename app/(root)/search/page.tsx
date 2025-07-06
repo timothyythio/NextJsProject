@@ -1,5 +1,6 @@
 import ProductCard from "@/components/shared/product/product-card";
 import { Button } from "@/components/ui/button";
+import { Product } from "@/types";
 import {
   getAllProducts,
   getAllCategories,
@@ -140,7 +141,8 @@ const SearchPage = async (props: {
                 All
               </Link>
             </li>
-            {categories.map((x) => (
+            {categories.map(
+              (x: { category: string | null; _count: number }) => (
               <li key={x.category}>
                 <Link
                   className={`${category === x.category && "font-bold"}`}
@@ -165,7 +167,7 @@ const SearchPage = async (props: {
                 All
               </Link>
             </li>
-            {prices.map((x) => (
+            {prices.map((x: { name: string; value: string }) => (
               <li key={x.value}>
                 <Link
                   className={`${price === x.value && "font-bold"}`}
@@ -190,7 +192,7 @@ const SearchPage = async (props: {
                 All
               </Link>
             </li>
-            {ratings.map((x) => (
+            {ratings.map((x: number) => (
               <li key={x}>
                 <Link
                   className={`${rating === x.toString() && "font-bold"}`}
@@ -222,7 +224,7 @@ const SearchPage = async (props: {
           </div>
           <div>
             Sort by{" "}
-            {sortOrders.map((s) => (
+            {sortOrders.map((s: string) => (
               <Link
                 key={s}
                 className={`mx-2 ${sort == s && "font-bold"}`}
@@ -235,7 +237,7 @@ const SearchPage = async (props: {
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products.data.length === 0 && <div>No products found</div>}
-          {products.data.map((product) => (
+          {products.data.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

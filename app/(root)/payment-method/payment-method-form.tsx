@@ -77,7 +77,7 @@ const PaymentMethodForm = ({
                         onValueChange={field.onChange}
                         className="flex flex-col space-y-2"
                       >
-                        {PAYMENT_METHODS?.map((paymentMethod) => (
+                        {PAYMENT_METHODS?.map((paymentMethod: string) => (
                           <FormItem
                             key={paymentMethod}
                             className="flex items-center space-x-3 space-y-0"

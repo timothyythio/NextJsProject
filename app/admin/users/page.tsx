@@ -56,7 +56,7 @@ const AdminUsersPage = async (props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.data.map((user) => (
+            {users.data.map((user: typeof users.data[number]) => (
               <TableRow key={user.id}>
                 <TableCell>{formatId(user.id)}</TableCell>
                 <TableCell>{user.name}</TableCell>
