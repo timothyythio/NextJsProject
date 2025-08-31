@@ -15,7 +15,7 @@ const ProductPrice = ({
   return (
     //I'm kinda guessing that the CN will take the classname value and apply it to the text. pretty neat if you want to change the class name dynamically
     //this is used in the product card page, where text-red-500 is used to make the price red.
-    <p className={cn("text-2xl", className)}>
+    <p className={cn("text-xl", className)}>
       <span className="text-xs align-super">$</span>
       {intValue}
       <span className="text-xs align-super">.{floatValue}</span>
